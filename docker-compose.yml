@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # Web Application & REST API
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ehr-portal-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/clinical_ehr
+      - NODE_ENV=production
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ehr-network
+
+  # PostgreSQL 16 Clinical Database
+  db:
+    image: postgres:16-alpine
+    container_name: ehr-postgres-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: clinical_ehr
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d clinical_ehr"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ehr-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  ehr-network:
+    driver: bridge
