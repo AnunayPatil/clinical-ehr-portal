@@ -118,8 +118,3 @@ E:\clinical-ehr-portal/
 | `POST` | `/api/encounters` | Save clinical documentation with physiological vitals checks. |
 | `POST` | `/api/simulate/stress` | Execute 500+ concurrent requests stress test. |
 
----
-
-## 🎯 Interview Quick Cheat Sheet
-
-See **[`INTERVIEW_PREP.md`](file:///E:/clinical-ehr-portal/INTERVIEW_PREP.md)** for verbatim interview answers, design decision tradeoffs, and live presentation strategies.
