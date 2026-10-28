@@ -38,7 +38,7 @@ let ClinicalFormService = class ClinicalFormService {
                 label: 'Attending Physician',
                 type: 'text',
                 required: true,
-                defaultValue: 'Dr. Gregory House',
+                defaultValue: 'Dr. Rajesh Gupta',
                 gridSpan: 1
             },
             {
@@ -135,7 +135,7 @@ let ClinicalFormService = class ClinicalFormService {
     createReactiveFormGroup() {
         return new FormGroup({
             patientId: new FormControl('', [Validators.required]),
-            providerName: new FormControl('Dr. Gregory House', [Validators.required, Validators.minLength(3)]),
+            providerName: new FormControl('Dr. Rajesh Gupta', [Validators.required, Validators.minLength(3)]),
             chiefComplaint: new FormControl('', [Validators.required, Validators.minLength(5)]),
             systolic: new FormControl(120, [Validators.required, ClinicalValidators.systolic()]),
             diastolic: new FormControl(80, [Validators.required, ClinicalValidators.diastolic()]),

@@ -241,19 +241,19 @@ class ClinicalEhrApp {
       }
     });
 
-    // Concurrency Stress Simulator Trigger
+    // ICU Bedside Telemetry Stream Trigger
     const btnStress = document.getElementById('btn-run-stress-500');
     btnStress?.addEventListener('click', async () => {
       btnStress.setAttribute('disabled', 'true');
-      btnStress.textContent = '⏳ Executing 500 Concurrent Requests...';
+      btnStress.textContent = '⏳ Ingesting 500 Bedside Telemetry Streams...';
       try {
         await this.concurrencyService.executeStressTest(500);
-        this.notification.success('Stress Test Passed', '500 concurrent clinical requests executed with 100% data integrity.');
+        this.notification.success('Telemetry Stream Ingested', '500 continuous bed monitors synced with 100% clinical data integrity.');
       } catch (err: any) {
-        this.notification.error('Stress Test Error', err.message);
+        this.notification.error('Telemetry Stream Error', err.message);
       } finally {
         btnStress.removeAttribute('disabled');
-        btnStress.textContent = '⚡ Execute 500 Concurrent Requests';
+        btnStress.textContent = '📡 Sync 500 Bedside Telemetry Streams';
       }
     });
 

@@ -64,21 +64,22 @@ CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
 CREATE INDEX IF NOT EXISTS idx_encounters_patient ON encounters(patient_id);
 CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_logs(created_at);
 
--- Initial Mock Data Seeding
+-- Initial Mock Data Seeding (Indian Demographics & Gmail)
 INSERT INTO patients (mrn, first_name, last_name, dob, gender, blood_type, phone, email, allergies, chronic_conditions, status)
 VALUES 
-('MRN-9021', 'Eleanor', 'Vance', '1984-04-12', 'Female', 'O+', '+1 (555) 234-5678', 'eleanor.vance@medmail.com', '{"Penicillin", "Sulfa"}', '{"Hypertension", "Type 2 Diabetes"}', 'Active'),
-('MRN-9022', 'Marcus', 'Chen', '1979-11-23', 'Male', 'A-', '+1 (555) 876-5432', 'marcus.chen@medmail.com', '{"Aspirin"}', '{"Asthma"}', 'Active'),
-('MRN-9023', 'Sophia', 'Rodriguez', '1995-07-30', 'Female', 'B+', '+1 (555) 345-6789', 'sophia.r@medmail.com', '{}', '{}', 'Inpatient'),
-('MRN-9024', 'David', 'Kim', '1968-02-14', 'Male', 'AB+', '+1 (555) 654-9870', 'dkim@medmail.com', '{"Latex", "Codeine"}', '{"Coronary Artery Disease"}', 'Active'),
-('MRN-9025', 'Sarah', 'Jenkins', '2001-09-05', 'Female', 'O-', '+1 (555) 432-1098', 'sjenkins@medmail.com', '{}', '{"Migraine"}', 'Active')
+('MRN-9021', 'Aarav', 'Sharma', '1984-04-12', 'Male', 'B+', '+91 98201 45678', 'aarav.sharma84@gmail.com', '{"Penicillin", "Sulfa drugs"}', '{"Hypertension", "Type 2 Diabetes"}', 'Active'),
+('MRN-9022', 'Priya', 'Patel', '1991-08-23', 'Female', 'O+', '+91 98450 12345', 'priya.patel.med@gmail.com', '{"Aspirin"}', '{"Asthma"}', 'Active'),
+('MRN-9023', 'Rajesh', 'Verma', '1975-11-15', 'Male', 'A+', '+91 99102 34567', 'rajesh.verma75@gmail.com', '{}', '{"Coronary Artery Disease"}', 'Inpatient'),
+('MRN-9024', 'Ananya', 'Iyer', '1996-03-29', 'Female', 'AB+', '+91 98840 98765', 'ananya.iyer.ai@gmail.com', '{"Latex", "Codeine"}', '{"Migraine"}', 'Active'),
+('MRN-9025', 'Vikram', 'Malhotra', '1988-06-18', 'Male', 'O-', '+91 98111 22334', 'vikram.malhotra88@gmail.com', '{}', '{"Hyperlipidemia"}', 'Active'),
+('MRN-9026', 'Sunita', 'Rao', '1965-12-05', 'Female', 'B-', '+91 94480 55667', 'sunita.rao65@gmail.com', '{"Morphine"}', '{"Osteoarthritis", "Thyroid Disorder"}', 'Active')
 ON CONFLICT (mrn) DO NOTHING;
 
 INSERT INTO appointments (patient_id, provider_name, department, appointment_date, duration_minutes, status, reason, room)
 VALUES
-(1, 'Dr. Gregory House', 'Internal Medicine', NOW() + INTERVAL '1 hour', 45, 'Scheduled', 'Quarterly Diabetes & BP Follow-up', 'Room 302'),
-(2, 'Dr. Allison Cameron', 'Pulmonology', NOW() + INTERVAL '2 hours', 30, 'Arrived', 'Asthma Wheezing and Spirometry', 'Room 108'),
-(3, 'Dr. Robert Chase', 'Cardiology', NOW() + INTERVAL '3 hours', 60, 'Scheduled', 'Post-Op Observation', 'ICU-B'),
-(4, 'Dr. Eric Foreman', 'Neurology', NOW() + INTERVAL '4 hours', 30, 'Scheduled', 'Routine Neuro Assessment', 'Room 205'),
-(5, 'Dr. Gregory House', 'Internal Medicine', NOW() + INTERVAL '5 hours', 30, 'Scheduled', 'Migraine Medication Review', 'Room 302')
+(1, 'Dr. Rajesh Gupta', 'Internal Medicine', NOW() + INTERVAL '1 hour', 45, 'Scheduled', 'Quarterly Diabetes & BP Follow-up', 'Room 302'),
+(2, 'Dr. Sunita Mehra', 'Pulmonology', NOW() + INTERVAL '2 hours', 30, 'Arrived', 'Asthma Wheezing and Spirometry Review', 'Room 108'),
+(3, 'Dr. Vikram Deshmukh', 'Cardiology', NOW() + INTERVAL '3 hours', 60, 'Scheduled', 'Post-Angioplasty Monitoring', 'ICU-B'),
+(4, 'Dr. Amit Verma', 'Neurology', NOW() + INTERVAL '4 hours', 30, 'Scheduled', 'Migraine Prophylaxis & Neuro Exam', 'Room 205'),
+(5, 'Dr. Rajesh Gupta', 'Internal Medicine', NOW() + INTERVAL '5 hours', 30, 'Scheduled', 'Lipid Profile & Lifestyle Consultation', 'Room 302')
 ON CONFLICT DO NOTHING;

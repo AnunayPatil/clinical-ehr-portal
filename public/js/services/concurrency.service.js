@@ -51,7 +51,7 @@ let ConcurrencyService = class ConcurrencyService {
             if (logs.length > 50)
                 logs.pop();
         };
-        addLog(`🚀 Initializing High-Concurrency Engine: ${requestCount} clinical documentation requests...`, 'info');
+        addLog(`🚀 Initializing Bedside Telemetry Stream: Ingesting ${requestCount} ward monitor packets...`, 'info');
         let completed = 0;
         let successful = 0;
         let validationBlocked = 0;
@@ -85,30 +85,30 @@ let ConcurrencyService = class ConcurrencyService {
                     pulse: 75,
                     temp: 98.6,
                     o2: 99,
-                    batchToken: `CONC-${idx}-${Date.now()}`
+                    batchToken: `BED-MONITOR-${idx}-${Date.now()}`
                 };
                 // Client-side validation gate
                 if (payload.systolic > 240 || payload.diastolic > 150) {
                     validationBlocked++;
                     errorTraps++;
-                    this.errorBoundary.handleException(new Error(`Client Validation Boundary: Systolic ${payload.systolic} exceeds human physiological safety limits.`), `Concurrent Request #${idx}`);
-                    addLog(`[Req #${idx}] 🛡️ Blocked by Client-Side Input Validation Boundary (Vitals out of range)`, 'warn');
+                    this.errorBoundary.handleException(new Error(`Client Validation Boundary: Systolic ${payload.systolic} exceeds human physiological safety limits.`), `Bedside Monitor #${idx}`);
+                    addLog(`[Bed #${idx}] 🛡️ Trapped by Client Validation Boundary (Vital reading exceeds human threshold)`, 'warn');
                 }
                 else if (isSimulatedSpike) {
                     rateLimited++;
-                    addLog(`[Req #${idx}] ⏳ Rate-limit throttle simulated, queue prioritized`, 'warn');
+                    addLog(`[Bed #${idx}] ⏳ High-throughput ward packet throttled and buffered`, 'warn');
                 }
                 else {
                     successful++;
                     if (idx % 50 === 0) {
-                        addLog(`[Req #${idx}] ✓ Verified clinical vital stream committed`, 'success');
+                        addLog(`[Bed #${idx}] ✓ Verified patient telemetry packet committed to EHR`, 'success');
                     }
                 }
             }
             catch (err) {
                 errorTraps++;
-                this.errorBoundary.handleException(err, `Concurrent Dispatch Worker #${idx}`);
-                addLog(`[Req #${idx}] ✕ Error Boundary Intercept: ${err.message}`, 'error');
+                this.errorBoundary.handleException(err, `Ward Ingestion Stream #${idx}`);
+                addLog(`[Bed #${idx}] ✕ Telemetry Error Boundary Intercept: ${err.message}`, 'error');
             }
             finally {
                 completed++;
@@ -158,7 +158,7 @@ let ConcurrencyService = class ConcurrencyService {
         await Promise.all(activePromises);
         // Also trigger server-side batch audit sync
         await this.http.post('/simulate/stress', { count: requestCount });
-        addLog(`🎯 Concurrency stress test completed: ${successful} succeeded, ${validationBlocked} safety-blocked, 100% data integrity verified.`, 'success');
+        addLog(`🎯 ICU Telemetry Sync Complete: ${successful} beds synced, ${validationBlocked} sensor anomalies trapped, 100% data integrity verified.`, 'success');
         const finalMetrics = {
             ...this.metricsSubject.value,
             isRunning: false,
